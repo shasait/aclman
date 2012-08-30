@@ -1,0 +1,10 @@
+[/*]
+OWNER=root
+GROUP=root
+ACL=u::rwD-,g::rwDD,o::r-D-,d:u::rwx,d:g::rwx,d:o::r-x
+
+[/apt-cacher-ng/*]
+OWNER=apt-cacher-ng
+GROUP=apt-cacher-ng
+ACL=u::rwD-,g::r-DD,o::----,d:u::rwx,d:g::r-x,d:o::---
+FINAL=true
