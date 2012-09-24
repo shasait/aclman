@@ -160,6 +160,7 @@ def execute(indent, *args):
 ###### RE
 
 plainfileexts = [
+	"7z",
 	"ani", "avi",
 	"bat", "bik", "bin", "bmp", "bup", "bz2",
 	"c", "cab", "cfg", "chm", "class", "cmd", "conf", "cpp", "crt", "csr", "css", "csv", "cue",
@@ -179,7 +180,7 @@ plainfileexts = [
 	"sd7", "srt", "sub", "svg", "sxc", "sxw",
 	"tgz", "tif", "torrent", "ttf", "txt",
 	"url",
-	"vdf", "vob",
+	"vbox-extpack", "vdf", "vob",
 	"war", "wav", "wma", "wmv",
 	"xls", "xml",
 	"zip", "zoo"
