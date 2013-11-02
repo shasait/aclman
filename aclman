@@ -168,17 +168,17 @@ plainfileexts = [
 	"ear", "exe",
 	"gif", "gz",
 	"h", "hlp", "htm", "html",
-	"ico", "ifo", "inf", "ini", "iso",
+	"ico", "ifo", "img", "inf", "ini", "iso",
 	"jar", "java", "jpg",
 	"key",
 	"ldif", "lnk", "log",
-	"m3u", "manifest", "mdf", "mds", "mkv", "mov", "mp3", "mp4", "mpeg", "mpg", "msi",
+	"m3u", "manifest", "md5", "mdf", "mds", "mkv", "mov", "mp3", "mp4", "mpeg", "mpg", "msi",
 	"nfo", "nrg",
 	"odg", "ods", "odt", "otg", "ots", "ott",
 	"pdf", "pdx", "pem", "png", "ppt", "properties",
 	"rar", "reg", "rpm", "rtf",
 	"sd7", "srt", "sub", "svg", "sxc", "sxw",
-	"tgz", "tif", "torrent", "ttf", "txt",
+	"tar", "tgz", "tif", "torrent", "ttf", "txt",
 	"url",
 	"vbox-extpack", "vdf", "vob",
 	"war", "wav", "wma", "wmv",
@@ -407,6 +407,7 @@ def chacl(path, newacl, removeaces = True, st = None, indent = ""):
 	if len(rmaces) > 0:
 		execute(indent, "setfacl", "-x", ",".join(rmaces), path)
 	if len(modaces) > 0:
+		log(1, "curacl: ", curacl)
 		execute(indent, "setfacl", "-m", ",".join(modaces), path)
 	if len(addaces) > 0:
 		execute(indent, "setfacl", "-m", ",".join(addaces), path)
