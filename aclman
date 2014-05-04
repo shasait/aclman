@@ -164,7 +164,7 @@ plainfileexts = [
 	"ani", "avi",
 	"bat", "bik", "bin", "bmp", "bup", "bz2",
 	"c", "cab", "cfg", "chm", "class", "cmd", "conf", "cpp", "crt", "csr", "css", "csv", "cue",
-	"dat", "db", "deb", "desc", "dll", "dmg", "doc", "ds_store", "dtd", "dvr-ms",
+	"dat", "db", "deb", "desc", "dll", "dmg", "doc", "docx", "ds_store", "dtd", "dvr-ms",
 	"ear", "exe",
 	"gif", "gz",
 	"h", "hlp", "htm", "html",
@@ -175,14 +175,14 @@ plainfileexts = [
 	"m3u", "manifest", "md5", "mdf", "mds", "mkv", "mov", "mp3", "mp4", "mpeg", "mpg", "msi",
 	"nfo", "nrg",
 	"odg", "ods", "odt", "otg", "ots", "ott",
-	"pdf", "pdx", "pem", "png", "ppt", "properties",
+	"pdf", "pdx", "pem", "png", "ppt", "pptx", "properties",
 	"rar", "reg", "rpm", "rtf",
 	"sd7", "srt", "sub", "svg", "sxc", "sxw",
 	"tar", "tgz", "tif", "torrent", "ttf", "txt",
 	"url",
 	"vbox-extpack", "vdf", "vob",
 	"war", "wav", "wma", "wmv",
-	"xls", "xml",
+	"xls", "xlsx", "xml",
 	"zip", "zoo"
 ]
 
