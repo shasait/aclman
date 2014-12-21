@@ -163,7 +163,7 @@ plainfileexts = [
 	"7z",
 	"ani", "avi",
 	"bat", "bik", "bin", "bmp", "bup", "bz2",
-	"c", "cab", "cfg", "chm", "class", "cmd", "conf", "cpp", "crt", "csr", "css", "csv", "cue",
+	"c", "cab", "cfg", "chm", "civ5mod", "class", "cmd", "conf", "cpp", "crt", "csr", "css", "csv", "cue",
 	"dat", "db", "deb", "desc", "dll", "dmg", "doc", "docx", "ds_store", "dtd", "dvr-ms",
 	"ear", "exe",
 	"gif", "gz",
