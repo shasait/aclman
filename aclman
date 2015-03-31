@@ -642,27 +642,23 @@ def worker(name):
 	cache.uid = {}
 	cache.gid = {}
 	cache.config = dict([])
-	while not get_should_exit():
-		try:
+	try:
+		while True:
+			if get_should_exit():
+				log(4, "Should exit")
+				break
 			log(4, "Get next work")
-			entry = workqueue.get(True)
+			entry = workqueue.get(True, 1)
 			try:
 				log(4, "Execute work")
 				doit(*entry)
 			finally:
 				workqueue.task_done()
-		except:
-			log(3, "Caught exception:", sys.exc_info()[1])
-			set_should_exit(True)
-	
-	# empty queue, so main process will exit on join
-	log(4, "Empty work queue")
-	while not workqueue.empty():
-		try:
-			entry = workqueue.get()
-			workqueue.task_done()
-		except:
-			set_should_exit(True)
+	except Queue.Empty:
+		log(4, "Queue empty")
+	except:
+		log(3, "Caught exception:", sys.exc_info()[1])
+		set_should_exit(True)
 
 def handle_sig_int(signum, frame):
 	set_should_exit(True)
@@ -701,9 +697,10 @@ if __name__ == '__main__':
 	
 	signal.signal(signal.SIGINT, handle_sig_int)
 	
+	threads = []
 	for i in range(4):
-		t = threading.Thread(target=worker, args = { "Worker " + str(i) })
-		t.daemon = True
-		t.start()
+		thread = threading.Thread(target=worker, args = { "Worker " + str(i + 1) })
+		thread.start()
+		threads.append(thread)
 	
-	workqueue.join()
+	worker("Worker 0")
