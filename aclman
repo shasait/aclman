@@ -159,7 +159,7 @@ def execute(indent, *args):
 
 ###### RE
 
-plainfileexts = [
+nonexecfileexts = [
 	"7z",
 	"ani", "avi",
 	"bat", "bik", "bin", "bmp", "bup", "bz2",
@@ -175,7 +175,7 @@ plainfileexts = [
 	"m3u", "manifest", "md5", "mdf", "mds", "mkv", "mov", "mp3", "mp4", "mpeg", "mpg", "msi",
 	"nfo", "nrg",
 	"odg", "ods", "odt", "otg", "ots", "ott",
-	"pdf", "pdx", "pem", "png", "ppt", "pptx", "properties",
+	"pdf", "pdx", "pem", "pit", "png", "ppt", "pptx", "properties",
 	"rar", "reg", "rpm", "rtf",
 	"sd7", "srt", "sub", "svg", "sxc", "sxw",
 	"tar", "tgz", "tif", "torrent", "ttf", "txt",
@@ -602,7 +602,7 @@ def doit(path, indent = "", st = None):
 					if sub.startswith("d:"):
 						del newacl[sub]
 				pathlc = path.lower()
-				for ext in plainfileexts:
+				for ext in nonexecfileexts:
 					if pathlc.endswith("." + ext):
 						log(3, indent, ext + "-file, remove execute permission from ACL")
 						for sub in newacl.iterkeys():
