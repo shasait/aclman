@@ -170,7 +170,7 @@ nonexecfileexts = [
 	"h", "hlp", "htm", "html",
 	"ico", "ifo", "img", "inf", "ini", "iso",
 	"jar", "java", "jpg",
-	"key",
+	"kdbx", "key",
 	"ldif", "lnk", "log",
 	"m3u", "manifest", "md5", "mdf", "mds", "mkv", "mov", "mp3", "mp4", "mpeg", "mpg", "msi",
 	"nfo", "nrg",
