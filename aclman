@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-# Copyright 2008-2012 Sebastian Hasait
+# Copyright 2008-2023 Sebastian Hasait
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,14 +19,14 @@
 
 import os
 import sys
-import ConfigParser
+import configparser
 import re
 import copy
 import pwd
 import grp
 import stat
 import subprocess
-import Queue
+import queue
 import threading
 import signal
 
@@ -38,7 +38,7 @@ cache = threading.local()
 
 ###### usage
 def usage():
-	print sys.argv[0], """[-R|--recursive] [-n|--dry] [-v|--verbose] [-h|--help] [<path>...]"
+	print(sys.argv[0], """[-R|--recursive] [-n|--dry] [-v|--verbose] [-h|--help] [<path>...]"
 
 Set permissions, ACLs and ownership as configured by files of name "..aclman" - one file configures
 all files and directories below (see examples).
@@ -138,7 +138,7 @@ It is possible to override configuration by placing additional "..aclman" files 
 			S(set for dirs, no change for files)
 			Z(clear for dirs, no change for files)
 			D(set for dirs,clear for files)
-"""
+""")
 
 ###### log
 
@@ -147,7 +147,7 @@ log_lock = threading.Lock()
 def log(level, *args):
 	if level <= verbose:
 		with log_lock:
-			print "[" + cache.name + "] " + " ".join(map(str, args))
+			print("[" + cache.name + "] " + " ".join(map(str, args)))
 
 ###### execute
 def execute(indent, *args):
@@ -193,7 +193,7 @@ def encodepath(path):
 ###### getpgrp
 
 def getpgrp(user):
-	if cache.pgrp.has_key(user):
+	if user in cache.pgrp:
 		return cache.pgrp[user]
 	
 	pgid = pwd.getpwnam(user)[3]
@@ -204,7 +204,7 @@ def getpgrp(user):
 ###### getuid
 
 def getuid(name):
-	if cache.uid.has_key(name):
+	if name in cache.uid:
 		return cache.uid[name]
 	
 	uid = pwd.getpwnam(name)[2]
@@ -214,7 +214,7 @@ def getuid(name):
 ###### getgid
 
 def getgid(name):
-	if cache.gid.has_key(name):
+	if name in cache.gid:
 		return cache.gid[name]
 	
 	gid = grp.getgrnam(name)[2]
@@ -301,7 +301,7 @@ def parseace(acestring, st):
 			s = 1 if st.st_mode & bits == bits else -1
 	elif len(lr) > 3:
 		if sub not in sbits:
-			raise RuntimeError("Fourth permission only allowed for \"" + "\", \"".join(sbits.keys()) + "\" and not for \"" + sub + "\"")
+			raise RuntimeError("Fourth permission only allowed for \"" + "\", \"".join(list(sbits.keys())) + "\" and not for \"" + sub + "\"")
 		if lr[3] not in vss:
 			raise RuntimeError("Only \"" + "\", \"".join(vss) + "\" are allowed for fourth permission and not \"" + lr[3] + "\"")
 		s = vss.index(lr[3]) - 1
@@ -342,7 +342,7 @@ def createchanges(curacl, newacl, bigvalues, replace, indent = ""):
 	addaces = []
 	modaces = []
 	rmaces = []
-	for sub in newacl.iterkeys():
+	for sub in newacl.keys():
 		newace = newacl[sub]
 		if sub in curacl:
 			curace = curacl[sub]
@@ -388,7 +388,7 @@ def createchanges(curacl, newacl, bigvalues, replace, indent = ""):
 			addaces.append(sub + ":" + mod)
 	
 	if replace:
-		for sub in curacl.iterkeys():
+		for sub in curacl.keys():
 			if sub not in newacl:
 				log(2, indent, "Remove ACE", sub)
 				rmaces.append(sub)
@@ -416,7 +416,7 @@ def chacl(path, newacl, removeaces = True, st = None, indent = ""):
 def readconfig(path, indent = ""):
 	if not os.path.isdir(path):
 		return readconfig(os.path.dirname(path), indent)
-	if cache.config.has_key(path):
+	if path in cache.config:
 		log(4, indent, "Config cache hit for", path)
 		return cache.config[path]
 	log(4, indent, "Create config for", path)
@@ -426,7 +426,7 @@ def readconfig(path, indent = ""):
 			configfile = os.path.join(path, pathentry)
 			log(3, indent, "Found configfile", configfile)
 			if not config:
-				config = ConfigParser.SafeConfigParser()
+				config = configparser.SafeConfigParser()
 			config.read(configfile)
 	updir = os.path.join(path, os.pardir)
 	if os.path.exists(updir) and not os.path.samefile(updir, path):
@@ -435,7 +435,7 @@ def readconfig(path, indent = ""):
 		if parentconfig:
 			log(3, indent, "Merge parentconfig")
 			if not config:
-				config = ConfigParser.SafeConfigParser()
+				config = configparser.SafeConfigParser()
 			basename = os.path.basename(path)
 			lenbasename = len(basename)
 			globalfinal = -1
@@ -522,7 +522,7 @@ def readconfig(path, indent = ""):
 	cache.config[path] = config
 	return config
 
-workqueue = Queue.Queue()
+workqueue = queue.Queue()
 
 ###### doit
 def doit(path, indent = "", st = None):
@@ -598,14 +598,14 @@ def doit(path, indent = "", st = None):
 				aclvalue = aclvalue[1:]
 			newacl = parseacl(aclvalue)
 			if not isdir:
-				for sub in newacl.keys():
+				for sub in list(newacl.keys()):
 					if sub.startswith("d:"):
 						del newacl[sub]
 				pathlc = path.lower()
 				for ext in nonexecfileexts:
 					if pathlc.endswith("." + ext):
 						log(3, indent, ext + "-file, remove execute permission from ACL")
-						for sub in newacl.iterkeys():
+						for sub in newacl.keys():
 							newacl[sub][3] = -1
 			chacl(path, newacl, replace, st, indent)
 	
@@ -654,7 +654,7 @@ def worker(name):
 				doit(*entry)
 			finally:
 				workqueue.task_done()
-	except Queue.Empty:
+	except queue.Empty:
 		log(4, "Queue empty")
 	except:
 		log(3, "Caught exception:", sys.exc_info()[1])
