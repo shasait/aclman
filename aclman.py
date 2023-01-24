@@ -656,6 +656,7 @@ def worker(name):
 		log(4, "Queue empty")
 	except:
 		log(3, "Caught exception:", sys.exc_info()[1])
+		log(4, "Traceback:", sys.exc_info()[2])
 		set_should_exit(True)
 
 def handle_sig_int(signum, frame):
