@@ -27,6 +27,7 @@ import subprocess
 import queue
 import threading
 import signal
+import traceback
 
 recursive = False
 verbose = 0
@@ -655,8 +656,10 @@ def worker(name):
 	except queue.Empty:
 		log(4, "Queue empty")
 	except:
-		log(3, "Caught exception:", sys.exc_info()[1])
-		log(4, "Traceback:", sys.exc_info()[2])
+		ei = sys.exc_info()
+		log(0, "Caught exception:", ei[1])
+		if verbose >= 4:
+			traceback.print_tb(ei[2])
 		set_should_exit(True)
 
 def handle_sig_int(signum, frame):
