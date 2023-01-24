@@ -32,6 +32,7 @@ import traceback
 recursive = False
 verbose = 0
 dry = False
+encoding = 'utf-8'
 
 cache = threading.local()
 
@@ -317,8 +318,9 @@ def getfacl(path, st = None):
 	childstdout = childprocess.communicate()[0]
 	if childprocess.returncode != 0:
 		raise RuntimeError("getfacl failed: " + str(childprocess.returncode))
-	for line in childstdout.splitlines():
-		if len(line) == 0 or line.startswith(b"#") or line.isspace():
+	childstdoutstr = childstdout.decode(encoding)
+	for line in childstdoutstr.splitlines():
+		if len(line) == 0 or line.startswith("#") or line.isspace():
 			continue
 		ace = parseace(line, st)
 		acl[ace[0]] = ace
