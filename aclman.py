@@ -20,8 +20,6 @@
 import os
 import sys
 import configparser
-import re
-import copy
 import pwd
 import grp
 import stat
@@ -196,8 +194,8 @@ def getpgrp(user):
 	if user in cache.pgrp:
 		return cache.pgrp[user]
 	
-	pgid = pwd.getpwnam(user)[3]
-	pgrp = grp.getgrgid(pgid)[0]
+	pgid = pwd.getpwnam(user).pw_gid
+	pgrp = grp.getgrgid(pgid).gr_name
 	cache.pgrp[user] = pgrp
 	return pgrp
 
@@ -319,7 +317,7 @@ def getfacl(path, st = None):
 	if childprocess.returncode != 0:
 		raise RuntimeError("getfacl failed: " + str(childprocess.returncode))
 	for line in childstdout.splitlines():
-		if len(line) == 0 or line.startswith("#") or line.isspace():
+		if len(line) == 0 or line.startswith(b"#") or line.isspace():
 			continue
 		ace = parseace(line, st)
 		acl[ace[0]] = ace
