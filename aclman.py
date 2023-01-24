@@ -424,7 +424,7 @@ def readconfig(path, indent = ""):
 			configfile = os.path.join(path, pathentry)
 			log(3, indent, "Found configfile", configfile)
 			if not config:
-				config = configparser.SafeConfigParser()
+				config = configparser.ConfigParser()
 			config.read(configfile)
 	updir = os.path.join(path, os.pardir)
 	if os.path.exists(updir) and not os.path.samefile(updir, path):
@@ -433,7 +433,7 @@ def readconfig(path, indent = ""):
 		if parentconfig:
 			log(3, indent, "Merge parentconfig")
 			if not config:
-				config = configparser.SafeConfigParser()
+				config = configparser.ConfigParser()
 			basename = os.path.basename(path)
 			lenbasename = len(basename)
 			globalfinal = -1
