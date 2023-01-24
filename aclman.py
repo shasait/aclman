@@ -559,13 +559,13 @@ def doit(path, indent = "", st = None):
 			section = "/" + basename
 	if section:
 		log(3, indent, "Using section", section)
-		if 4 <= verbose:
+		if verbose >= 4:
 			for option, value in config.items(section):
 				log(4, indent, option, "=", value)
 		
 		# IGNORE
 		if config.has_option(section, "IGNORE"):
-			log(1, indent, "Found IGNORE")
+			log(3, indent, "Found IGNORE")
 			return
 		
 		if not isdir and os.path.basename(path).startswith("..aclman"):
